@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FMWebViewJSBridge</string>
+    <string name="button_name">Java调用Web</string>
+    <string name="action_settings">action_settings</string>
+</resources>

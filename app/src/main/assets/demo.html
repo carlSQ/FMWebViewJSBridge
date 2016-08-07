@@ -1,0 +1,182 @@
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>
+        js调用java
+    </title>
+</head>
+
+<body>
+<p>
+    <xmp id="show">
+    </xmp>
+</p>
+<p>
+    <xmp id="init">
+    </xmp>
+</p>
+<p>
+    <input type="text" id="text1" value="carl shen"/>
+</p>
+<p>
+    <input type="text" id="text2" value="hdfhdsh"/>
+</p>
+
+<p>
+    <input type="button" id="enter2" value="调用注入方法" onclick="testClick2();"
+    />
+</p>
+<p>
+    <input type="button" id="enter3" value="调用注入方法返回bool" onclick="testClick3();"
+    />
+</p>
+<p>
+    <input type="button" id="enter4" value="调用注入方法int" onclick="testClick4();"
+    />
+</p>
+<p>
+    <input type="button" id="enter5" value="调用注入方法array" onclick="testClick5();"
+    />
+</p>
+<p>
+    <input type="button" id="enter7" value="调用注入方法自定义User" onclick="testClick7();"
+    />
+</p>
+<p>
+    <input type="button" id="enter6" value="调用注入方法异步" onclick="testClick6();"
+    />
+</p>
+<p>
+    <input type="button" id="enter6" value="调用注入方法不传参数" onclick="testClick8();"
+    />
+</p>
+<p>
+    <input type="button" id="enter6" value="调用注入方法没有回调" onclick="testClick9();"
+    />
+</p>
+<p>
+    <input type="button" id="enter6" value="调用注入方法无任何参数" onclick="testClick10();"
+    />
+</p>
+<p>
+    <input type="button" id="enter6" value="调用注入方法只有回调" onclick="testClick11();"
+    />
+</p>
+<p>
+    <input type="button" id="enter8" value="显示html" onclick="testDiv();"/>
+</p>
+<p>
+    <input type="file" value="打开文件"/>
+</p>
+</body>
+<script>
+        function testDiv() {
+            document.getElementById("show").innerHTML = document.getElementsByTagName("html")[0].innerHTML;
+        }
+
+
+        function person() {
+            this.testMethod = testMethod;
+            function testMethod(name, user) {
+                alert(name+user.name);
+                return {name:"carl shen", age:"7"};
+
+            }
+        }
+
+        testObject= new person();
+
+        function connectWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) {
+                callback(WebViewJavascriptBridge)
+            } else {
+                document.addEventListener(
+                    'WebViewJavascriptBridgeInjectFinishedReady'
+                    , function() {
+
+                        callback(WebViewJavascriptBridge)
+                    },
+                    false
+                );
+            }
+        }
+
+        connectWebViewJavascriptBridge(function(bridge) {
+            bridge.receiveNativeMessage();
+            bridge.addNativeInterfaces('testObj',testObject);
+        });
+
+        function testClick2() {
+         javaInterface.test("hello", function(data){
+            alert("inject response: "+data);
+         });
+        }
+
+        function testClick3() {
+
+         javaInterface.testBool(true, function(data){
+            alert("inject response: "+data);
+         });
+
+        }
+
+        function testClick4() {
+
+         javaInterface.testInt(1, function(data){
+            alert("inject response: "+data);
+         });
+
+        }
+
+        function testClick5() {
+
+         javaInterface.testArray(["hello",'people'], function(data){
+            alert("inject response: "+data);
+         });
+
+        }
+
+        function testClick6() {
+
+         javaInterface.testAsy("异步", function(responseData){
+            alert("inject response: "+responseData);
+         });
+
+        }
+
+        function testClick7() {
+
+         javaInterface.testCustuomObject({name:"carl shen", age:"7"}, function(data){
+            alert("inject response: "+"name:"+data.name + "age:" +data.age);
+         });
+
+        }
+
+        function testClick8() {
+         javaInterface.test(function(data){
+            alert("inject response: "+data);
+         });
+        }
+
+        function testClick9() {
+         javaInterface.test("hello");
+        }
+
+        function testClick10() {
+         javaInterface.testNon();
+        }
+
+         function testClick11() {
+         javaInterface.testNonParamsAsy(function(data){
+            alert("inject response: "+data);
+         });
+        }
+
+
+
+
+
+
+</script>
+
+</html>
